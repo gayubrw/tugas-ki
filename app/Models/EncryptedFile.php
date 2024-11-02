@@ -24,4 +24,9 @@ class EncryptedFile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function sharedFiles()
+    {
+        return $this->hasMany(SharedFile::class, 'encrypted_file_id');
+    }
 }

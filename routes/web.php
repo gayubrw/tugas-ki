@@ -4,7 +4,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataAccessController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to login
@@ -57,6 +57,17 @@ Route::middleware(['auth'])->group(function () {
     // Logout route
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+        Route::middleware(['auth'])->group(function () {
+            Route::get('/data-access', [DataAccessController::class, 'index'])->name('data-access.index');
+            Route::get('/data-access/users', [DataAccessController::class, 'users'])->name('data-access.users');
+            Route::get('/data-access/create/{user}', [DataAccessController::class, 'create'])->name('data-access.create');
+            Route::post('/data-access', [DataAccessController::class, 'store'])->name('data-access.store');
+            Route::get('/data-access/{request}', [DataAccessController::class, 'show'])->name('data-access.show');
+            Route::post('/data-access/{dataRequest}/approve', [DataAccessController::class, 'approve'])->name('data-access.approve');
+            Route::get('/data-access/{request}/files', [DataAccessController::class, 'viewSharedFiles'])->name('data-access.files');
+            Route::get('/files/{file}/download-shared', [FileController::class, 'downloadShared'])->name('files.download-shared');
+        });
 });
 
 require __DIR__.'/auth.php';

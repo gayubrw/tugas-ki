@@ -77,7 +77,8 @@ class EncryptionService
         );
 
         if ($decrypted === false) {
-            throw new Exception("Decryption failed: " . openssl_error_string());
+            $error = openssl_error_string();
+            throw new Exception("Decryption failed: {$error}");
         }
 
         $time = microtime(true) - $start;

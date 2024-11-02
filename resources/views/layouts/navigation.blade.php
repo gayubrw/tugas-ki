@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('files.analysis')" :active="request()->routeIs('files.analysis')">
                         {{ __('Analysis') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('data-access.users')" :active="request()->routeIs('data-access.users')">
+                        {{ __('Request Access') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -45,6 +48,10 @@
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('data-access.index')">
+                            {{ __('Request Information') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->

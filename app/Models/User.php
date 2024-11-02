@@ -45,4 +45,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function encryptedFiles()
+    {
+        return $this->hasMany(EncryptedFile::class);
+    }
+
+    public function userKey()
+    {
+        return $this->hasOne(UserKey::class);
+    }
 }

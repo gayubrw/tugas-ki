@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\EncryptedFile;
+use App\Models\SharedFile;
+use App\Models\UserKey;
+use App\Services\KeyManagementService;
 use App\Services\EncryptionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
     protected $encryptionService;
+    protected $keyService;
 
-    public function __construct(EncryptionService $encryptionService)
+    public function __construct(EncryptionService $encryptionService, KeyManagementService $keyService)
     {
         $this->encryptionService = $encryptionService;
+        $this->keyService = $keyService;
     }
 
     public function index()
@@ -108,6 +114,40 @@ class FileController extends Controller
 
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Failed to decrypt and download file: ' . $e->getMessage()]);
+        }
+    }
+
+    public function downloadShared(SharedFile $sharedFile)
+    {
+        $encryptedFile = $sharedFile->encryptedFile;
+
+        if (!$encryptedFile) {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+
+        // Ambil data terenkripsi, kunci, dan IV dari model
+        $encryptedData = base64_decode($encryptedFile->stored_name); // Ambil nama file yang tersimpan (atau ambil data terenkripsi dari kolom yang sesuai)
+        $key = base64_decode($encryptedFile->encryption_key); // Pastikan kunci diencode dengan base64
+        $iv = base64_decode($encryptedFile->encryption_iv); // Pastikan IV diencode dengan base64
+
+        // Logging
+        \Log::info("Decrypting file with key: " . base64_encode($key) . " and IV: " . base64_encode($iv));
+
+        try {
+            // Dekripsi file
+            $decryptedData = $this->encryptionService->decrypt($encryptedData, $encryptedFile->encryption_algorithm, $key, $iv);
+
+            if ($decryptedData) {
+                // Streaming file yang didekripsi untuk diunduh
+                return response()->streamDownload(function () use ($decryptedData) {
+                    echo $decryptedData['data'];
+                }, $encryptedFile->original_name);
+            } else {
+                return back()->with('error', 'Gagal mendekripsi file.');
+            }
+        } catch (\Exception $e) {
+            \Log::error("Error decrypting file: {$e->getMessage()}");
+            return back()->with('error', 'Terjadi kesalahan saat mendekripsi file.');
         }
     }
 

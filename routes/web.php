@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DataAccessController;
+use App\Http\Controllers\DigitalSignatureController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to login
@@ -67,7 +68,15 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/data-access/{dataRequest}/approve', [DataAccessController::class, 'approve'])->name('data-access.approve');
             Route::get('/data-access/{request}/files', [DataAccessController::class, 'viewSharedFiles'])->name('data-access.files');
             Route::get('/files/{file}/download-shared', [FileController::class, 'downloadShared'])->name('files.download-shared');
-        });
+            Route::get('/digital-signature', [DigitalSignatureController::class, 'index'])
+            ->name('digital-signature.index');
+        Route::post('/digital-signature/generate-key-pair', [DigitalSignatureController::class, 'generateKeyPair'])
+            ->name('generate-key-pair');
+        Route::post('/digital-signature/sign-pdf', [DigitalSignatureController::class, 'signPDF'])
+            ->name('sign-pdf');
+        Route::post('/digital-signature/verify-signature', [DigitalSignatureController::class, 'verifySignature'])
+            ->name('verify-signature');
+            });
 });
 
 require __DIR__.'/auth.php';

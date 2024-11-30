@@ -27,6 +27,9 @@
                     <x-nav-link :href="route('data-access.users')" :active="request()->routeIs('data-access.users')">
                         {{ __('Request Access') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('digital-signature.index')" :active="request()->routeIs('digital-signature.index')">
+                        {{ __('Digital Signature') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -75,6 +78,55 @@
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Responsive Navigation Menu -->
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('files.index')" :active="request()->routeIs('files.index')">
+                {{ __('My Files') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('files.create')" :active="request()->routeIs('files.create')">
+                {{ __('Upload File') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('files.analysis')" :active="request()->routeIs('files.analysis')">
+                {{ __('Analysis') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('data-access.users')" :active="request()->routeIs('data-access.users')">
+                {{ __('Request Access') }}
+            </x-responsive-nav-link>
+            <!-- Tambahkan link Digital Signature di responsive menu -->
+            <x-responsive-nav-link :href="route('digital-signature.index')" :active="request()->routeIs('digital-signature.index')">
+                {{ __('Digital Signature') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <!-- Responsive Settings Options -->
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="px-4">
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+            </div>
+
+            <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('profile.edit')">
+                    {{ __('Profile') }}
+                </x-responsive-nav-link>
+
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Log Out') }}
+                    </x-responsive-nav-link>
+                </form>
             </div>
         </div>
     </div>

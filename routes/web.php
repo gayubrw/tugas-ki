@@ -59,24 +59,24 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-        Route::middleware(['auth'])->group(function () {
-            Route::get('/data-access', [DataAccessController::class, 'index'])->name('data-access.index');
-            Route::get('/data-access/users', [DataAccessController::class, 'users'])->name('data-access.users');
-            Route::get('/data-access/create/{user}', [DataAccessController::class, 'create'])->name('data-access.create');
-            Route::post('/data-access', [DataAccessController::class, 'store'])->name('data-access.store');
-            Route::get('/data-access/{request}', [DataAccessController::class, 'show'])->name('data-access.show');
-            Route::post('/data-access/{dataRequest}/approve', [DataAccessController::class, 'approve'])->name('data-access.approve');
-            Route::get('/data-access/{request}/files', [DataAccessController::class, 'viewSharedFiles'])->name('data-access.files');
-            Route::get('/files/{file}/download-shared', [FileController::class, 'downloadShared'])->name('files.download-shared');
-            Route::get('/digital-signature', [DigitalSignatureController::class, 'index'])
-            ->name('digital-signature.index');
-            Route::post('/digital-signature/generate-key-pair', [DigitalSignatureController::class, 'generateKeyPair'])
-                ->name('generate-key-pair');
-            Route::post('/digital-signature/sign-pdf', [DigitalSignatureController::class, 'signPDF'])
-                ->name('sign-pdf');
-            Route::post('/digital-signature/verify-signature', [DigitalSignatureController::class, 'verifySignature'])
-                ->name('verify-signature');
-        });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/data-access', [DataAccessController::class, 'index'])->name('data-access.index');
+    Route::get('/data-access/users', [DataAccessController::class, 'users'])->name('data-access.users');
+    Route::get('/data-access/create/{user}', [DataAccessController::class, 'create'])->name('data-access.create');
+    Route::post('/data-access', [DataAccessController::class, 'store'])->name('data-access.store');
+    Route::get('/data-access/{request}', [DataAccessController::class, 'show'])->name('data-access.show');
+    Route::post('/data-access/{dataRequest}/approve', [DataAccessController::class, 'approve'])->name('data-access.approve');
+    Route::get('/data-access/{request}/files', [DataAccessController::class, 'viewSharedFiles'])->name('data-access.files');
+    Route::get('/files/{file}/download-shared', [FileController::class, 'downloadShared'])->name('files.download-shared');
+    Route::get('/digital-signature', [DigitalSignatureController::class, 'index'])
+        ->name('digital-signature.index');
+    Route::post('/digital-signature/generate-key-pair', [DigitalSignatureController::class, 'generateKeyPair'])
+        ->name('generate-key-pair');
+    Route::post('/digital-signature/sign-pdf', [DigitalSignatureController::class, 'signPDF'])
+        ->name('sign-pdf');
+    Route::post('/digital-signature/verify-signature', [DigitalSignatureController::class, 'verifySignature'])
+    ->name('verify-signature');
+    });
 });
 
 require __DIR__.'/auth.php';

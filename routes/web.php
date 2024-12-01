@@ -70,13 +70,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/files/{file}/download-shared', [FileController::class, 'downloadShared'])->name('files.download-shared');
             Route::get('/digital-signature', [DigitalSignatureController::class, 'index'])
             ->name('digital-signature.index');
-        Route::post('/digital-signature/generate-key-pair', [DigitalSignatureController::class, 'generateKeyPair'])
-            ->name('generate-key-pair');
-        Route::post('/digital-signature/sign-pdf', [DigitalSignatureController::class, 'signPDF'])
-            ->name('sign-pdf');
-        Route::post('/digital-signature/verify-signature', [DigitalSignatureController::class, 'verifySignature'])
-            ->name('verify-signature');
-            });
+            Route::post('/digital-signature/generate-key-pair', [DigitalSignatureController::class, 'generateKeyPair'])
+                ->name('generate-key-pair');
+            Route::post('/digital-signature/sign-pdf', [DigitalSignatureController::class, 'signPDF'])
+                ->name('sign-pdf');
+            Route::post('/digital-signature/verify-signature', [DigitalSignatureController::class, 'verifySignature'])
+                ->name('verify-signature');
+        });
 });
 
 require __DIR__.'/auth.php';
